@@ -1,7 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
+from pymongo import MongoClient
 # bs4 는 함수??
 # requests도 외부 라이브러리고 BeautifulSoup도 외부 라이브러리면 하는일은 무엇?
+
+client = MongoClient('localhost', 27017)
+db = client.dbsparta
 
 # 타겟 URL을 읽어서 HTML를 받아오고,
 headers = {
@@ -18,7 +22,15 @@ music = soup.select('div.music-list-wrap > table.list-wrap > tbody > tr.list')
 
 for mus in music:
     # .text[0:2] index 0부터 1까지 출력, .text[1:3] index 1부터 2까지 출력
+    # ex) .text[i:j] -> i ~ (j-1)
     number = mus.select_one("td.number").text[0:2].rstrip()
     title = mus.select_one("td.check > input")["title"]
     artist = mus.select_one("td.info > a.artist").text
-    print(number, title, artist)
+    # print(number, title, artist)
+    doc = {
+        "number": number,
+        "title": title,
+        "artist": artist
+    }
+    print(doc)
+    db.genie_chart.insert_one(doc)

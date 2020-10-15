@@ -33,4 +33,9 @@ for mus in music:
         "artist": artist
     }
     print(doc)
-    db.genie_chart.insert_one(doc)
+    # db.genie_chart.insert_one(doc)
+
+# genie_chart = db.genie_chart.find({})
+# for chart in genie_chart:
+#     print(chart["number"], chart["title"], chart["artist"])
+
